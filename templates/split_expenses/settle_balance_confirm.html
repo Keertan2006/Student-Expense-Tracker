@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Settle Balance - Expense Tracker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h3><i class="bi bi-check-circle"></i> Settle Balance</h3>
+            </div>
+            <div class="card-body">
+                <p>Mark this balance as settled?</p>
+                <div class="alert alert-info">
+                    <strong>{{ balance.owed_by.username }}</strong> owes <strong>₹{{ balance.amount|floatformat:2 }}</strong> to <strong>{{ balance.owed_to.username }}</strong>
+                    {% if balance.expense %}
+                    <br><small>For: {{ balance.expense.description }}</small>
+                    {% endif %}
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success">Yes, Settle</button>
+                        <a href="{% url 'balance_view' %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

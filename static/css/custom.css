@@ -1,0 +1,495 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --primary-color: #CCFF00;
+    --primary-gradient: linear-gradient(135deg, #E6FF66 0%, #B3E600 100%);
+    --bg-gradient: radial-gradient(circle at 15% 0%, #151921 0%, #080A0E 100%);
+    --secondary-color: #161A22;
+    --success-color: #CCFF00;
+    --danger-color: #EF4444;
+    --warning-color: #F59E0B;
+    --info-color: #3B82F6;
+    --dark-bg: #080A0E;
+    --card-bg: linear-gradient(145deg, #1C2029 0%, #12151D 100%);
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    --glass-hover-shadow: 0 12px 48px 0 rgba(204, 255, 0, 0.15);
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg-gradient);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    min-height: 100vh;
+}
+
+/* Glassmorphism Cards */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    box-shadow: var(--glass-shadow);
+    color: var(--text-primary);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--glass-hover-shadow);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.card-header {
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 20px 20px 0 0 !important;
+    font-weight: 600;
+    padding: 1.25rem 1.5rem;
+    color: white;
+    letter-spacing: 0.5px;
+}
+
+/* Navbar */
+.navbar {
+    background: #080A0E !important;
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 0;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-brand {
+    font-weight: 800;
+    font-size: 1.8rem;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+
+.nav-link {
+    font-weight: 500;
+    font-size: 1.15rem;
+    color: var(--text-secondary) !important;
+    transition: color 0.3s ease;
+    margin: 0 0.5rem;
+    position: relative;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #fff !important;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background: var(--primary-gradient);
+    transition: width 0.3s ease;
+    border-radius: 2px;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    border: none;
+    box-shadow: 0 4px 15px rgba(204, 255, 0, 0.3);
+    color: #080A0E !important;
+    font-weight: 700;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(204, 255, 0, 0.5);
+    background: var(--primary-gradient);
+    opacity: 0.95;
+    color: #080A0E !important;
+}
+
+/* Typography & Utilities */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: white;
+}
+
+.text-muted {
+    color: var(--text-secondary) !important;
+}
+
+/* Tables */
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--text-primary);
+    --bs-table-hover-color: var(--text-primary);
+    --bs-table-hover-bg: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
+    background: transparent;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table thead th {
+    border-bottom: 2px solid var(--border-color);
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    padding: 1rem;
+}
+
+.table tbody td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: transparent;
+    color: var(--text-primary);
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.table tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+.table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Forms */
+.form-control,
+.form-select {
+    background: #0D1016;
+    border: 1px solid var(--border-color);
+    color: white;
+    border-radius: 12px;
+    padding: 0.85rem 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: #12151D;
+    border-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 0 0 4px rgba(204, 255, 0, 0.2);
+}
+
+.form-control::placeholder {
+    color: var(--text-secondary);
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+/* Stat Cards */
+.stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    box-shadow: var(--glass-shadow);
+    color: var(--text-primary);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--glass-hover-shadow);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--primary-gradient);
+    opacity: 0.8;
+}
+
+.stat-card .icon {
+    font-size: 3rem;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.stat-card h4 {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+.stat-card p.text-muted {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* Currency */
+.currency {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    color: var(--success-color);
+    text-shadow: 0 2px 10px rgba(204, 255, 0, 0.2);
+}
+
+.currency::before {
+    content: '₹';
+    margin-right: 2px;
+}
+
+/* Alerts and Messages */
+.alert {
+    background: rgba(204, 255, 0, 0.1);
+    border: 1px solid rgba(204, 255, 0, 0.3);
+    color: #F8FAFC;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.alert-danger {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #fee2e2;
+}
+
+.alert-success {
+    background: rgba(204, 255, 0, 0.1);
+    border-color: rgba(204, 255, 0, 0.3);
+    color: #F8FAFC;
+}
+
+/* Dropdown */
+.dropdown-menu {
+    background: #12151D;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    padding: 0.5rem;
+}
+
+.dropdown-item {
+    color: var(--text-primary);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.dropdown-divider {
+    border-top-color: var(--border-color);
+}
+
+/* Progress Bars */
+.progress {
+    background-color: rgba(255, 255, 255, 0.1);
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.progress-bar {
+    background: var(--primary-gradient);
+    box-shadow: 0 0 10px rgba(204, 255, 0, 0.5);
+}
+
+/* Badges */
+.badge {
+    font-weight: 500;
+    padding: 0.4em 0.8em;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+}
+
+.bg-danger {
+    background: var(--danger-color) !important;
+    color: white;
+}
+
+.bg-success {
+    background: var(--success-color) !important;
+    color: #080A0E;
+}
+
+.bg-primary {
+    background: var(--primary-color) !important;
+    color: #080A0E !important;
+}
+
+.bg-warning {
+    background: var(--warning-color) !important;
+    color: #000;
+}
+
+.bg-info {
+    background: var(--info-color) !important;
+    color: white;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Loading Spinner */
+.spinner {
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+
+    .btn,
+    .navbar {
+        display: none !important;
+    }
+
+    .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        background: white;
+        color: black;
+    }
+
+    .stat-card .icon {
+        -webkit-text-fill-color: black;
+    }
+}
+
+/* Animations */
+.fade-in {
+    animation: fadeIn 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Budget Alert Badge Animation */
+#alert-badge {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.1);
+        box-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
+    }
+}
+
+/* Budget Alert Card */
+.card.border-warning {
+    border-width: 2px !important;
+    border-color: var(--warning-color) !important;
+    animation: slideInDown 0.5s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Alert Icons */
+.alert i.fs-4 {
+    margin-top: 2px;
+}

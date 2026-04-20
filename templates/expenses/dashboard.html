@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Expense Tracker{% endblock %}
+
+{% block content %}
+<h1 class="mb-4"><i class="bi bi-speedometer2"></i> Dashboard</h1>
+
+<!-- Budget Alerts Section -->
+{% if budget_alerts %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-primary">
+            <div class="card-header bg-primary text-dark d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="bi bi-bell-fill"></i> Budget Guardian Alerts
+                    <span class="badge bg-danger ms-2">{{ alert_count }}</span>
+                </h5>
+                <a href="{% url 'budget_alerts' %}" class="btn btn-sm btn-outline-dark">
+                    View All Alerts <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for alert in budget_alerts|slice:":3" %}
+                    <div class="col-md-4 mb-3">
+                        <div class="alert alert-{{ alert.level }} alert-dismissible fade show mb-0 shadow-sm" role="alert">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-shrink-0">
+                                    {% if alert.level == 'danger' %}
+                                    <i class="bi bi-exclamation-triangle-fill fs-4 text-danger"></i>
+                                    {% elif alert.level == 'warning' %}
+                                    <i class="bi bi-exclamation-circle-fill fs-4 text-warning"></i>
+                                    {% else %}
+                                    <i class="bi bi-info-circle-fill fs-4 text-info"></i>
+                                    {% endif %}
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <strong>{{ alert.budget.category.name|default:"Overall Budget" }}</strong>
+                                    <p class="mb-2 small">{{ alert.message }}</p>
+                                    <div class="progress" style="height: 10px; border-radius: 5px;">
+                                        <div class="progress-bar bg-{{ alert.level }} progress-bar-striped progress-bar-animated" 
+                                             role="progressbar" 
+                                             data-width="{{ alert.percentage }}%"
+                                             aria-valuenow="{{ alert.percentage }}" 
+                                             aria-valuemin="0" 
+                                             aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                    <small class="text-muted d-block mt-1">{{ alert.percentage|floatformat:1 }}% of budget used</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if alert_count > 3 %}
+                <div class="text-center mt-2">
+                    <a href="{% url 'budget_alerts' %}" class="btn btn-sm btn-outline-primary">
+                        View {{ alert_count|add:"-3" }} more alert{{ alert_count|add:"-3"|pluralize }} <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="stat-card text-center">
+            <div class="icon text-primary"><i class="bi bi-calendar-day"></i></div>
+            <h4>₹{{ total_today|floatformat:2 }}</h4>
+            <p class="text-muted">Today</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card text-center">
+            <div class="icon text-info"><i class="bi bi-calendar-week"></i></div>
+            <h4>₹{{ total_this_week|floatformat:2 }}</h4>
+            <p class="text-muted">This Week</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card text-center">
+            <div class="icon text-warning"><i class="bi bi-calendar-month"></i></div>
+            <h4>₹{{ total_this_month|floatformat:2 }}</h4>
+            <p class="text-muted">This Month</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Category-wise Spending Chart -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-pie-chart"></i> Category-wise Spending (This Month)</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Budget Usage and Recent Expenses -->
+    <div class="col-md-6">
+        <!-- Budget Usage -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="bi bi-piggy-bank"></i> Budget Usage</h5>
+            </div>
+            <div class="card-body">
+                {% if budget_data %}
+                    {% for item in budget_data %}
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span><strong>{{ item.budget.category.name|default:"Overall" }}</strong></span>
+                            <span>₹{{ item.spent|floatformat:2 }} / ₹{{ item.budget.amount|floatformat:2 }}</span>
+                        </div>
+                        <div class="progress" style="height: 25px;">
+                            <div class="progress-bar {% if item.percentage >= 100 %}bg-danger{% elif item.percentage >= 90 %}bg-danger{% elif item.percentage >= 75 %}bg-warning{% else %}bg-success{% endif %}" 
+                                 role="progressbar" 
+                                 data-width="{{ item.percentage }}%">
+                                {{ item.percentage|floatformat:1 }}%
+                            </div>
+                        </div>
+                        {% if item.alerts %}
+                        <div class="mt-2">
+                            {% for alert in item.alerts %}
+                            <small class="badge bg-{{ alert.level }} text-white">
+                                {% if alert.level == 'danger' %}
+                                <i class="bi bi-exclamation-triangle"></i>
+                                {% elif alert.level == 'warning' %}
+                                <i class="bi bi-exclamation-circle"></i>
+                                {% else %}
+                                <i class="bi bi-info-circle"></i>
+                                {% endif %}
+                                {{ alert.percentage|floatformat:0 }}% used
+                            </small>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No active budgets. <a href="{% url 'budget_create' %}">Create one</a></p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Recent Expenses -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5><i class="bi bi-clock-history"></i> Recent Expenses</h5>
+                <a href="{% url 'expense_create' %}" class="btn btn-sm btn-primary">
+                    <i class="bi bi-plus-circle"></i> Add Expense
+                </a>
+            </div>
+            <div class="card-body">
+                {% if recent_expenses %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for expense in recent_expenses %}
+                            <tr>
+                                <td>{{ expense.date }}</td>
+                                <td>{{ expense.description }}</td>
+                                <td>
+                                    <span class="badge bg-secondary">
+                                        {{ expense.get_category_name }}
+                                    </span>
+                                </td>
+                                <td><strong>₹{{ expense.amount|floatformat:2 }}</strong></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center mt-3">
+                    <a href="{% url 'expense_list' %}" class="btn btn-primary">View All Expenses</a>
+                </div>
+                {% else %}
+                <p class="text-muted text-center">No expenses yet. <a href="{% url 'expense_create' %}">Add your first expense</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="chart-labels" type="application/json">
+    [{% for cat in category_expenses %}"{{ cat.category__name|default:'Uncategorized' }}"{% if not forloop.last %},{% endif %}{% endfor %}]
+</script>
+<script id="chart-values" type="application/json">
+    [{% for cat in category_expenses %}{{ cat.total }}{% if not forloop.last %},{% endif %}{% endfor %}]
+</script>
+<script>
+    // Category Chart
+    const categoryLabels = JSON.parse(document.getElementById('chart-labels').textContent || '[]');
+    const categoryValues = JSON.parse(document.getElementById('chart-values').textContent || '[]');
+    
+    const categoryData = {
+        labels: categoryLabels,
+        datasets: [{
+            data: categoryValues,
+            backgroundColor: [
+                '#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6',
+                '#1abc9c', '#34495e', '#e67e22', '#95a5a6', '#d35400'
+            ]
+        }]
+    };
+
+    const ctx = document.getElementById('categoryChart');
+    if (ctx) {
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: categoryData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: true
+            }
+        });
+    }
+    
+    // Apply progress bar widths
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.progress-bar[data-width]').forEach(function(el) {
+            el.style.width = el.getAttribute('data-width');
+        });
+    });
+    
+    // Update navbar alert badge
+    const alertCountStr = '{{ alert_count|default:"0" }}';
+    const alertCount = parseInt(alertCountStr, 10);
+    
+    if (alertCount > 0) {
+        document.addEventListener('DOMContentLoaded', function() {
+            const badge = document.getElementById('alert-badge');
+            if (badge) {
+                badge.textContent = alertCountStr;
+                badge.style.display = 'inline-block';
+            }
+        });
+    }
+</script>
+{% endblock %}

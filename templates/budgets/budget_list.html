@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Budgets - Expense Tracker{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-piggy-bank"></i> My Budgets</h1>
+    <div>
+        <a href="{% url 'budget_alerts' %}" class="btn btn-warning me-2">
+            <i class="bi bi-bell"></i> Budget Guardian
+            {% if all_alerts %}<span class="badge bg-danger">{{ all_alerts|length }}</span>{% endif %}
+        </a>
+        <a href="{% url 'budget_create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Create Budget
+        </a>
+    </div>
+</div>
+
+<!-- Budget Alerts -->
+{% if all_alerts %}
+<div class="alert alert-warning">
+    <h5><i class="bi bi-exclamation-triangle"></i> Budget Alerts</h5>
+    <ul class="mb-0">
+        {% for alert in all_alerts %}
+        <li>{{ alert.message }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<!-- Budgets List -->
+<div class="row">
+    {% for item in budget_data %}
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>{{ item.budget.category.name|default:"Overall Budget" }}</h5>
+                <div>
+                    <a href="{% url 'budget_edit' item.budget.pk %}" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a href="{% url 'budget_delete' item.budget.pk %}" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Spent: ₹{{ item.spent|floatformat:2 }}</span>
+                        <span>Budget: ₹{{ item.budget.amount|floatformat:2 }}</span>
+                    </div>
+                    <div class="progress" style="height: 30px;">
+                        <div class="progress-bar {% if item.usage_percentage >= 100 %}bg-danger{% elif item.usage_percentage >= 90 %}bg-warning{% elif item.usage_percentage >= 75 %}bg-info{% else %}bg-success{% endif %}" 
+                             role="progressbar" 
+                             style="width: {{ item.usage_percentage }}%">
+                            {{ item.usage_percentage|floatformat:1 }}%
+                        </div>
+                    </div>
+                </div>
+                <p><strong>Remaining:</strong> ₹{{ item.remaining|floatformat:2 }}</p>
+                <p><small class="text-muted">
+                    Period: {{ item.budget.start_date }} to {{ item.budget.end_date }}
+                </small></p>
+                {% if item.alerts %}
+                <div class="mt-2">
+                    {% for alert in item.alerts %}
+                    <div class="alert alert-{{ alert.level }} alert-sm py-2 mb-1">
+                        <small>{{ alert.message }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body text-center">
+                <p class="text-muted">No budgets created yet. <a href="{% url 'budget_create' %}">Create your first budget</a></p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

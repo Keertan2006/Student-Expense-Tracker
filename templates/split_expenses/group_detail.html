@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load expenses_tags %}
+
+{% block title %}{{ group.name }} - Expense Tracker{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-people-fill"></i> {{ group.name }}</h1>
+    <div>
+        {% if group.created_by == user %}
+        <a href="{% url 'group_edit' group.pk %}" class="btn btn-outline-primary me-2">
+            <i class="bi bi-pencil"></i> Edit
+        </a>
+        {% endif %}
+        <a href="{% url 'shared_expense_create' group.pk %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Add Expense
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Group Info -->
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="bi bi-info-circle"></i> Group Info</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Description:</strong> {{ group.description|default:"No description" }}</p>
+                <p><strong>Members:</strong> {{ group.get_member_count }}</p>
+                <p><strong>Total Expenses:</strong> ₹{{ group.get_total_expenses|floatformat:2 }}</p>
+                <p><small class="text-muted">Created by {{ group.created_by.username }}</small></p>
+            </div>
+        </div>
+
+        <!-- Members -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="bi bi-people"></i> Members</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for member in group.members.all %}
+                    <li class="list-group-item">
+                        <i class="bi bi-person-circle"></i> {{ member.username }}
+                        {% if member == group.created_by %}<span class="badge bg-primary">Creator</span>{% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% if group.created_by == user %}
+                <hr>
+                <form method="post" action="{% url 'group_add_member' group.pk %}">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" name="username" class="form-control" placeholder="Username">
+                        <button type="submit" class="btn btn-primary">Add Member</button>
+                    </div>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Balances -->
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-cash-coin"></i> Who Owes Whom</h5>
+            </div>
+            <div class="card-body">
+                {% if balance_summary %}
+                    {% for item in balance_summary %}
+                    <div class="alert alert-info py-2 mb-2">
+                        <strong>{{ item.owed_by.username }}</strong> owes <strong>₹{{ item.amount|floatformat:2 }}</strong> to <strong>{{ item.owed_to.username }}</strong>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No outstanding balances</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Expenses -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-list-ul"></i> Shared Expenses</h5>
+            </div>
+            <div class="card-body">
+                {% if expenses %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Paid By</th>
+                                <th>Amount</th>
+                                <th>Split</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for expense in expenses %}
+                            <tr>
+                                <td>{{ expense.date }}</td>
+                                <td>{{ expense.description }}</td>
+                                <td>{{ expense.paid_by.username }}</td>
+                                <td><strong>₹{{ expense.amount|floatformat:2 }}</strong></td>
+                                <td>
+                                    <span class="badge bg-info">
+                                        Total: ₹{{ expense.amount|floatformat:2 }}
+                                        <br>
+                                        <small>₹{{ expense.get_amount_per_person|floatformat:2 }} per person</small>
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted text-center">No expenses yet. <a href="{% url 'shared_expense_create' group.pk %}">Add the first expense</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Shared Expense - Expense Tracker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="bi bi-plus-circle"></i> Add Shared Expense to {{ group.name }}</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_description" class="form-label">Description *</label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                        <div class="text-danger">{{ form.description.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_amount" class="form-label">Amount (INR) *</label>
+                        <div class="input-group">
+                            <span class="input-group-text">₹</span>
+                            {{ form.amount }}
+                        </div>
+                        {% if form.amount.errors %}
+                        <div class="text-danger">{{ form.amount.errors }}</div>
+                        {% endif %}
+                        <small class="text-muted">This will be split equally among all {{ group.get_member_count }} member(s)</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_paid_by" class="form-label">Paid By *</label>
+                        {{ form.paid_by }}
+                        {% if form.paid_by.errors %}
+                        <div class="text-danger">{{ form.paid_by.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_date" class="form-label">Date *</label>
+                        {{ form.date }}
+                        {% if form.date.errors %}
+                        <div class="text-danger">{{ form.date.errors }}</div>
+                        {% endif %}
+                    </div>
+                    {{ form.group }}  <!-- Hidden field -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Add Expense</button>
+                        <a href="{% url 'group_detail' group.pk %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
