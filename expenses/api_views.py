@@ -183,7 +183,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
         
         # Get categories ordered by number of expenses
         categories = Category.objects.annotate(
-            expense_count=Count('expense')
+            expense_count=Count('expense_set')
         ).filter(expense_count__gt=0).order_by('-expense_count')[:limit]
         
         serializer = CategorySerializer(categories, many=True)

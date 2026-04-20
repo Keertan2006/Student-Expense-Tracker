@@ -58,8 +58,11 @@ class SharedExpenseForm(forms.ModelForm):
             if 'group' in self.data:
                 group_id = self.data.get('group')
                 if group_id:
-                    group = Group.objects.get(id=group_id)
-                    self.fields['paid_by'].queryset = group.members.all()
+                    try:
+                        group = Group.objects.get(id=group_id)
+                        self.fields['paid_by'].queryset = group.members.all()
+                    except (Group.DoesNotExist, ValueError, TypeError):
+                        self.fields['paid_by'].queryset = User.objects.none()
             elif self.instance and self.instance.pk:
                 self.fields['paid_by'].queryset = self.instance.group.members.all()
             else:

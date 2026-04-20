@@ -63,11 +63,7 @@ def dashboard_view(request):
     all_alerts = []  # Collect all budget alerts
     
     for budget in active_budgets:
-        spent = all_expenses.filter(
-            category=budget.category,
-            date__gte=budget.start_date,
-            date__lte=budget.end_date
-        ).aggregate(Sum('amount'))['amount__sum'] or 0
+        spent = budget.get_spent_amount()
         percentage = (spent / budget.amount * 100) if budget.amount > 0 else 0
         
         # Get alerts for this budget

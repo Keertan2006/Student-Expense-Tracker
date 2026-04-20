@@ -1,6 +1,7 @@
 """
 Serializers for split expense API endpoints.
 """
+
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Group, SharedExpense, Balance
@@ -17,8 +18,8 @@ class GroupSerializer(serializers.ModelSerializer):
     """Serializer for Group model."""
     created_by = UserSerializer(read_only=True)
     members = UserSerializer(many=True, read_only=True)
-    member_count = serializers.ReadOnlyField()
-    total_expenses = serializers.ReadOnlyField()
+    member_count = serializers.SerializerMethodField()
+    total_expenses = serializers.SerializerMethodField()
     
     class Meta:
         model = Group
@@ -27,6 +28,12 @@ class GroupSerializer(serializers.ModelSerializer):
             'created_at', 'updated_at', 'member_count', 'total_expenses'
         ]
         read_only_fields = ['created_by', 'created_at', 'updated_at']
+
+    def get_member_count(self, obj):
+        return obj.get_member_count()
+
+    def get_total_expenses(self, obj):
+        return obj.get_total_expenses()
     
     def create(self, validated_data):
         """Create group and assign creator."""
