@@ -4,15 +4,20 @@ Django settings for expense_tracker project.
 This file contains all the configuration settings for the Student Expense Tracker application.
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
+
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-student-expense-tracker-dev-key-change-in-production'
+SECRET_KEY = os.getenv(
+    'SECRET_KEY',
+    'django-insecure-student-expense-tracker-dev-key-change-in-production'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
@@ -77,13 +82,20 @@ WSGI_APPLICATION = 'expense_tracker.wsgi.application'
 
 
 # Database
-# Using SQLite for simplicity and beginner-friendliness
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Use a managed database in production (e.g., Neon/Postgres via DATABASE_URL).
+# SQLite remains the default for local development.
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
