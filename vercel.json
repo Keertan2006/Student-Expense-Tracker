@@ -1,12 +1,9 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "expense_tracker/wsgi.py",
-      "use": "@vercel/python"
-    }
-  ],
   "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "expense_tracker/wsgi.py"
