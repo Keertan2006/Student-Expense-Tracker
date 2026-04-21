@@ -496,7 +496,8 @@ h6 {
 
 /* --- Authentication Overrides (Split Screen) --- */
 .auth-body {
-    background: var(--dark-bg); /* Flat dark bg instead of gradient for auth to let sidebar pop */
+    background: var(--dark-bg);
+    /* Flat dark bg instead of gradient for auth to let sidebar pop */
     overflow-x: hidden;
 }
 
@@ -507,7 +508,7 @@ h6 {
 
 /* Sidebar with branding/marketing */
 .auth-sidebar {
-    background: 
+    background:
         radial-gradient(circle at top left, rgba(204, 255, 0, 0.15) 0%, transparent 60%),
         radial-gradient(circle at bottom left, rgba(204, 255, 0, 0.05) 0%, transparent 50%),
         linear-gradient(to right, #1C2029 0%, #171A22 60%, var(--dark-bg) 100%);
