@@ -3,22 +3,13 @@
   "builds": [
     {
       "src": "expense_tracker/wsgi.py",
-      "use": "@vercel/python",
-      "config": {
-        "buildCommand": "pip install -r requirements.txt && python manage.py collectstatic --noinput",
-        "installCommand": "pip install -r requirements.txt",
-        "maxLambdaSize": "15mb"
-      }
+      "use": "@vercel/python"
     }
   ],
   "routes": [
-    { "src": "/static/(.*)", "dest": "/static/$1" },
-    { "src": "/media/(.*)", "dest": "/media/$1" },
-    { "src": "/(.*)", "dest": "expense_tracker/wsgi.py" }
-  ],
-  "functions": {
-    "expense_tracker/wsgi.py": {
-      "runtime": "python3.12"
+    {
+      "src": "/(.*)",
+      "dest": "expense_tracker/wsgi.py"
     }
-  }
+  ]
 }
