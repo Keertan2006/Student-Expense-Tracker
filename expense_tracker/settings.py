@@ -7,7 +7,7 @@ This file contains all the configuration settings for the Student Expense Tracke
 import os
 from pathlib import Path
 
-import dj_database_url
+import dj_database_url  # pyright: ignore[reportMissingImports]
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +20,7 @@ SECRET_KEY = os.getenv(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
+DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 
 ALLOWED_HOSTS = [
     'localhost',

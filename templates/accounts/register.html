@@ -1,61 +1,86 @@
-{% extends 'base.html' %}
+{% extends 'accounts/auth_base.html' %}
 
 {% block title %}Register - Expense Tracker{% endblock %}
 
-{% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header text-center">
-                <h3><i class="bi bi-person-plus"></i> Create Account</h3>
+{% block auth_content %}
+<div class="auth-box">
+    <div class="mb-4 text-center">
+        <h2 class="fw-bold mb-2">Create Account</h2>
+        <p class="text-muted">Sign up to start tracking your expenses</p>
+    </div>
+    
+    <div class="d-flex gap-3 mb-4 sso-buttons">
+        <button type="button" class="btn btn-outline-secondary flex-grow-1 auth-social-btn">
+            <i class="bi bi-google me-2 text-danger"></i> Google
+        </button>
+        <button type="button" class="btn btn-outline-secondary flex-grow-1 auth-social-btn">
+            <i class="bi bi-github me-2"></i> GitHub
+        </button>
+    </div>
+
+    <div class="d-flex align-items-center mb-4 auth-divider">
+        <hr class="flex-grow-1">
+        <span class="mx-3 text-muted" style="font-size: 0.8rem; letter-spacing: 1px;">OR CONTINUE WITH EMAIL</span>
+        <hr class="flex-grow-1">
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="id_username" class="form-label auth-label">Username</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+            <div class="text-danger small mt-1">{{ form.username.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="mb-3">
+            <label for="id_email" class="form-label auth-label">Email Address</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+            <div class="text-danger small mt-1">{{ form.email.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="row g-2 mb-3">
+            <div class="col-md-6">
+                <label for="id_first_name" class="form-label auth-label">First Name</label>
+                {{ form.first_name }}
             </div>
-            <div class="card-body">
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="id_username" class="form-label">Username</label>
-                        {{ form.username }}
-                        {% if form.username.errors %}
-                        <div class="text-danger">{{ form.username.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="mb-3">
-                        <label for="id_email" class="form-label">Email</label>
-                        {{ form.email }}
-                        {% if form.email.errors %}
-                        <div class="text-danger">{{ form.email.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="id_first_name" class="form-label">First Name</label>
-                            {{ form.first_name }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="id_last_name" class="form-label">Last Name</label>
-                            {{ form.last_name }}
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="id_password1" class="form-label">Password</label>
-                        {{ form.password1 }}
-                        {% if form.password1.errors %}
-                        <div class="text-danger">{{ form.password1.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="mb-3">
-                        <label for="id_password2" class="form-label">Confirm Password</label>
-                        {{ form.password2 }}
-                        {% if form.password2.errors %}
-                        <div class="text-danger">{{ form.password2.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Register</button>
-                </form>
-                <hr>
-                <p class="text-center">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+            <div class="col-md-6">
+                <label for="id_last_name" class="form-label auth-label">Last Name</label>
+                {{ form.last_name }}
             </div>
         </div>
+        
+        <div class="mb-3">
+            <label for="id_password1" class="form-label auth-label">Password</label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+            <div class="text-danger small mt-1">{{ form.password1.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="mb-4">
+            <label for="id_password2" class="form-label auth-label">Confirm Password</label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+            <div class="text-danger small mt-1">{{ form.password2.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <button type="submit" class="btn btn-primary w-100 py-3 auth-btn">Sign Up</button>
+    </form>
+    
+    <p class="text-center mt-4 mb-5 auth-switch">
+        Already have an account? <a href="{% url 'login' %}" class="fw-bold text-decoration-none text-light">Login here</a>
+    </p>
+
+    <div class="text-center">
+        <p class="text-muted auth-terms mx-auto" style="font-size: 0.75rem; max-width: 320px;">
+            By continuing, you agree to our Terms of Service and Privacy Policy.
+        </p>
     </div>
 </div>
 {% endblock %}

@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Authenticate - Expense Tracker{% endblock %}</title>
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    
+
     <!-- Custom CSS -->
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}?v=2.0">
 </head>
+
 <body class="auth-body">
-    
+
     <!-- Split Screen Layout -->
     <div class="row g-0 vh-100 auth-split">
         <!-- Left Side: Branding / Marketing -->
@@ -23,51 +25,54 @@
             <div class="auth-sidebar-content">
                 <div class="mb-4 d-flex align-items-center auth-logo">
                     <div class="logo-icon me-3"><i class="bi bi-wallet2"></i></div>
-                    <span class="logo-text">TRACK YOUR EXPENSE</span>
+                    <span class="logo-text">TRACK YOUR EXPENSE SMARTLY</span>
                 </div>
-                
+
                 <h1 class="display-3 fw-bold mb-4 auth-heading">
-                    The modern<br>
                     <span class="auth-heading-highlight">Students</span><br>
                     Expense Tracker.
                 </h1>
-                
+
                 <p class="fs-5 mb-5 auth-subtitle">
-                    One stop for students to keeps records of their spending, set intelligent budgets, and track their goals.
+                    One stop for students to keeps records of their spending, set intelligent budgets, and track their
+                    goals.
                 </p>
-                
+
                 <div class="auth-features">
                     <div class="d-flex align-items-start mb-4">
-                        <div class="feature-icon me-3"><i class="bi bi-bullseye"></i></div>
+                        <div class="feature-icon me-3"><i class="bi bi-piggy-bank"></i></div>
                         <div>
-                            <h5 class="fw-bold mb-1 feature-title">Smart Goal Tracking</h5>
-                            <p class="mb-0 text-muted feature-desc">Set targets and let the app handle the daily math.</p>
+                            <h5 class="fw-bold mb-1 feature-title">Budget Management</h5>
+                            <p class="mb-0 text-muted feature-desc">Create categories and track your spending against
+                                monthly limits.</p>
                         </div>
                     </div>
-                    
+
                     <div class="d-flex align-items-start mb-4">
-                        <div class="feature-icon me-3"><i class="bi bi-receipt"></i></div>
+                        <div class="feature-icon me-3"><i class="bi bi-shield-check"></i></div>
                         <div>
-                            <h5 class="fw-bold mb-1 feature-title">Receipt Scanning</h5>
-                            <p class="mb-0 text-muted feature-desc">Scan bills with your camera for instant logging.</p>
+                            <h5 class="fw-bold mb-1 feature-title">Budget Guardian</h5>
+                            <p class="mb-0 text-muted feature-desc">Receive intelligent alerts when you are nearing your
+                                budget limits.</p>
                         </div>
                     </div>
-                    
+
                     <div class="d-flex align-items-start">
-                        <div class="feature-icon me-3"><i class="bi bi-robot"></i></div>
+                        <div class="feature-icon me-3"><i class="bi bi-people"></i></div>
                         <div>
-                            <h5 class="fw-bold mb-1 feature-title">AI Financial Advisor</h5>
-                            <p class="mb-0 text-muted feature-desc">Personalized insights on your spending habits.</p>
+                            <h5 class="fw-bold mb-1 feature-title">Split Expenses (Mini Splitwise)</h5>
+                            <p class="mb-0 text-muted feature-desc">Easily split bills with friends and keep track of
+                                who owes who.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <!-- Right Side: Authentication Form -->
         <div class="col-lg-6 d-flex justify-content-center align-items-center auth-form-container p-4">
             <div class="w-100 auth-form-wrapper">
-                
+
                 <!-- Messages (Django messages framework) -->
                 {% if messages %}
                 <div class="mb-4">
@@ -79,7 +84,7 @@
                     {% endfor %}
                 </div>
                 {% endif %}
-                
+
                 {% block auth_content %}{% endblock %}
             </div>
         </div>
@@ -90,4 +95,5 @@
     {% load static %}
     <script src="{% static 'js/main.js' %}"></script>
 </body>
+
 </html>

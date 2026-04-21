@@ -493,3 +493,168 @@ h6 {
 .alert i.fs-4 {
     margin-top: 2px;
 }
+
+/* --- Authentication Overrides (Split Screen) --- */
+.auth-body {
+    background: var(--dark-bg); /* Flat dark bg instead of gradient for auth to let sidebar pop */
+    overflow-x: hidden;
+}
+
+/* We override the .container margin for auth pages if they happen to inherit it */
+.auth-split {
+    min-height: 100vh;
+}
+
+/* Sidebar with branding/marketing */
+.auth-sidebar {
+    background: 
+        radial-gradient(circle at top left, rgba(204, 255, 0, 0.15) 0%, transparent 60%),
+        radial-gradient(circle at bottom left, rgba(204, 255, 0, 0.05) 0%, transparent 50%),
+        linear-gradient(to right, #1C2029 0%, #171A22 60%, var(--dark-bg) 100%);
+    border-right: none;
+    position: relative;
+    overflow: hidden;
+}
+
+/* A subtle decorative glowing orb in the background */
+.auth-sidebar::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -20%;
+    width: 60%;
+    height: 60%;
+    background: var(--primary-color);
+    filter: blur(150px);
+    opacity: 0.15;
+    z-index: 0;
+}
+
+.auth-sidebar-content {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.auth-logo .logo-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(204, 255, 0, 0.1);
+    color: var(--primary-color);
+    border: 1px solid rgba(204, 255, 0, 0.3);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.auth-logo .logo-text {
+    font-weight: 800;
+    letter-spacing: 2px;
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.auth-heading {
+    line-height: 1.1;
+    font-size: 3.5rem;
+}
+
+.auth-heading-highlight {
+    color: var(--primary-color);
+}
+
+.auth-features .feature-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+}
+
+/* Right side form container */
+.auth-form-container {
+    background: var(--dark-bg);
+}
+
+.auth-form-wrapper {
+    max-width: 420px;
+}
+
+/* Social Buttons */
+.auth-social-btn {
+    border-color: var(--border-color);
+    color: var(--text-primary);
+    background: transparent;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.auth-social-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* Inputs specialized for auth */
+.auth-input {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+}
+
+.auth-input:focus {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.auth-label {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+/* General Django form overrides for auth */
+.auth-form-wrapper input[type="text"],
+.auth-form-wrapper input[type="password"],
+.auth-form-wrapper input[type="email"] {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.auth-form-wrapper input[type="text"]:focus,
+.auth-form-wrapper input[type="password"]:focus,
+.auth-form-wrapper input[type="email"]:focus {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(204, 255, 0, 0.1);
+    outline: none;
+}
+
+/* Overriding django help text/errors */
+ul.errorlist {
+    color: var(--danger-color);
+    font-size: 0.85rem;
+    list-style: none;
+    padding-left: 0;
+    margin-top: 0.5rem;
+}
+
+.helptext {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    display: block;
+    margin-top: 0.25rem;
+}
